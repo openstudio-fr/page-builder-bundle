@@ -1,7 +1,7 @@
 <div class="pb-editor"
     {{ attributes.defaults({
         ...stimulus_controller(controller, {
-            'options': options|json_encode(),
+            'options': options is empty ? '{}' : options|json_encode(),
             'icons': icons|json_encode(),
             'endpoints': endpoints|json_encode(constant('JSON_FORCE_OBJECT')),
             'fields': fields|json_encode(constant('JSON_FORCE_OBJECT')),
