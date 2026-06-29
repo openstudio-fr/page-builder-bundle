@@ -32,7 +32,7 @@ final readonly class GrapesJsResponseBuilder
 
             return $this->buildError(
                 'All uploads failed: '.implode(', ', $messages),
-                Response::HTTP_INTERNAL_SERVER_ERROR,
+                Response::HTTP_UNPROCESSABLE_ENTITY,
             );
         }
 
