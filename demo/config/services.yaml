@@ -1,0 +1,20 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+
+    App\PageBuilder\LocalImageUploadAdapter:
+        arguments:
+            $uploadDir: '%kernel.project_dir%/public/uploads'
+
+    App\PageBuilder\LocalImageLibraryAdapter:
+        arguments:
+            $uploadDir: '%kernel.project_dir%/public/uploads'
+
+    OpenStudio\PageBuilderBundle\Contract\ImageUploadPortInterface: '@App\PageBuilder\LocalImageUploadAdapter'
+    OpenStudio\PageBuilderBundle\Contract\ImageLibraryPortInterface: '@App\PageBuilder\LocalImageLibraryAdapter'
