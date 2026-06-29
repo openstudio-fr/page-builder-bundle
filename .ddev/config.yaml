@@ -1,9 +1,0 @@
-name: pb-demo
-type: php
-docroot: demo/public
-php_version: "8.3"
-webserver_type: nginx-fpm
-composer_root: demo
-composer_version: "2"
-nodejs_version: "20"
-web_environment: []
