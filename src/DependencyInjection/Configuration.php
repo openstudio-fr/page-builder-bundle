@@ -1,0 +1,45 @@
+<?php
+
+declare(strict_types=1);
+
+namespace OpenStudio\PageBuilderBundle\DependencyInjection;
+
+use Override;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
+
+final class Configuration implements ConfigurationInterface
+{
+    #[Override]
+    public function getConfigTreeBuilder(): TreeBuilder
+    {
+        $treeBuilder = new TreeBuilder('openstudio_page_builder');
+
+        $treeBuilder->getRootNode()
+            ->children()
+                ->scalarNode('render_template_endpoint')
+                    ->info('URL the editor calls to render server-side composite blocks. The host owns this endpoint.')
+                    ->defaultNull()
+                ->end()
+                ->scalarNode('app_stylesheet')
+                    ->info('Stylesheet injected into the editor canvas so the content renders with the host styles.')
+                    ->defaultNull()
+                ->end()
+                ->arrayNode('palette')
+                    ->info('Color palette offered by the editor color picker.')
+                    ->scalarPrototype()->end()
+                ->end()
+                ->arrayNode('icons')
+                    ->info('Icon set available to the icon block and icon traits.')
+                    ->arrayPrototype()
+                        ->children()
+                            ->scalarNode('name')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('svg')->isRequired()->cannotBeEmpty()->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+
+        return $treeBuilder;
+    }
+}
