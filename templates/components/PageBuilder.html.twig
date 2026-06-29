@@ -1,0 +1,20 @@
+<div class="pb-editor"
+    {{ attributes.defaults({
+        ...stimulus_controller(controller, {
+            'options': options|json_encode(),
+            'icons': icons|json_encode(),
+            'endpoints': endpoints|json_encode(constant('JSON_FORCE_OBJECT')),
+            'fields': fields|json_encode(constant('JSON_FORCE_OBJECT')),
+            'palette': palette|json_encode(),
+            'context': context|default(''),
+        })
+    }) }}
+>
+    <div class="pb-editor__panels" {{ stimulus_target(controller, 'panels') }}>
+        <div {{ stimulus_target(controller, 'blocks') }}></div>
+    </div>
+
+    <div class="pb-editor__canvas" {{ stimulus_target(controller, 'editor') }}>
+        {% block content %}{% endblock %}
+    </div>
+</div>
