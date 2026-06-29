@@ -17,7 +17,12 @@ export default (editor, options = {}) => {
 
     editor.Storage.add("form", {
         load() {
-            return JSON.parse(projectDataEl.value || "{}");
+            try {
+                return JSON.parse(projectDataEl.value || "{}");
+            } catch {
+                console.error("formStorage plugin: invalid JSON in the data field, starting from an empty project");
+                return {};
+            }
         },
         store(data) {
             // The media library is the source of truth for assets, reloaded on load.

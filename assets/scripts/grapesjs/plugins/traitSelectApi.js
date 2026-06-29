@@ -27,9 +27,17 @@ export default (editor) => {
             el.appendChild(loadingOption);
             el.disabled = true;
 
-            fetch(endpoint)
-                .then((response) => response.json())
+            fetch(endpoint, { credentials: "same-origin" })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then((data) => {
+                    if (!Array.isArray(data)) {
+                        throw new Error("Expected an array of options");
+                    }
                     el.innerHTML = "";
 
                     const emptyOption = document.createElement("option");

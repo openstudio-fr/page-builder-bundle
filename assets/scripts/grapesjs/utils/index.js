@@ -67,11 +67,15 @@ export function twigRendererFactory(templateName, params, options, hooks = {}) {
             const response = await fetch(endpoint, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
+                credentials: "same-origin",
                 body: JSON.stringify({
                     templateName,
                     parameters: typeof params === "function" ? params(el, view) : (params ?? {}),
                 }),
             });
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
             const json = await response.json();
             onRender({ json, el, view });
         } catch (error) {
