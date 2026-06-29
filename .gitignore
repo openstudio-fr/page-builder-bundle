@@ -5,4 +5,5 @@
 /phpstan.cache/
 /demo/vendor/
 /demo/var/
-/demo/.ddev/
+/.ddev/*
+!/.ddev/config.yaml
