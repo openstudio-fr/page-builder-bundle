@@ -46,6 +46,6 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
         ->arg('$configProvider', service(PageBuilderConfigProviderInterface::class))
         ->arg('$urlGenerator', service('router'));
 
-    $services->set(ImageUploadController::class)->public()->tag('controller.service_arguments');
-    $services->set(ImageLibraryController::class)->public()->tag('controller.service_arguments');
+    $services->set(ImageUploadController::class)->autoconfigure(false)->public()->tag('controller.service_arguments');
+    $services->set(ImageLibraryController::class)->autoconfigure(false)->public()->tag('controller.service_arguments');
 };
