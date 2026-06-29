@@ -162,8 +162,15 @@ Point `render_template_endpoint` at this route through the bundle configuration,
 ```yaml
 # config/packages/openstudio_page_builder.yaml
 openstudio_page_builder:
-    app_stylesheet: '/build/app.css'      # stylesheet injected into the editor canvas
+    app_stylesheet: '/build/app.css'       # stylesheet injected into the editor canvas
     render_template_endpoint: null         # URL for server-rendered blocks
+    max_upload_size: 5242880               # max image size in bytes (5 MB)
+    allowed_mime_types:                    # accepted image types; SVG is excluded by default
+        - image/jpeg
+        - image/png
+        - image/gif
+        - image/webp
+        - image/avif
     palette: ['#000000', '#ffffff']        # colors offered by the color picker
     icons:                                 # icon set for the icon block and icon traits
         - { name: 'star', svg: '<svg>...</svg>' }
@@ -171,9 +178,11 @@ openstudio_page_builder:
 
 All keys are optional. The bundle ships a static config provider; replace it by binding your own `PageBuilderConfigProviderInterface` when you need per-context configuration.
 
+SVG is left out of `allowed_mime_types` on purpose: an SVG can carry scripts, so serving an uploaded one from your own origin would expose you to stored XSS. Add `image/svg+xml` only if you serve those files with `Content-Disposition: attachment` or from a separate domain. Icon SVGs passed through the `icons` config are rendered as raw markup inside the editor, so keep that list under your control.
+
 ## Security
 
-The bundle ships no firewall and no access control. Its endpoints are plain routes, mounted under the prefix you chose. Secure that prefix with your `access_control`:
+The bundle ships no firewall and no access control. Its endpoints are plain routes, unauthenticated by default, mounted under the prefix you chose. You must put them behind your firewall. Secure that prefix with your `access_control`:
 
 ```yaml
 # config/packages/security.yaml
@@ -181,7 +190,9 @@ access_control:
     - { path: ^/admin/page-builder, roles: ROLE_ADMIN }
 ```
 
-The endpoints validate file size and type on their own. The `render-template` endpoint is yours, so its template allowlist and input validation are your responsibility.
+The upload and delete routes change state, so protect them against cross-site requests too: keep your session cookies on `SameSite=Lax` (the Symfony default), or add CSRF protection if your setup needs it. For a stateless API firewall this does not apply.
+
+The endpoints validate the file size and type on their own. The `render-template` endpoint is yours, so its template allowlist and input validation are your responsibility.
 
 ## License
 
