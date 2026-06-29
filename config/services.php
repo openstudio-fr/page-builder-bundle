@@ -26,7 +26,9 @@ return static function (Symfony\Component\DependencyInjection\Loader\Configurato
 
     $services->set(GrapesJsFileExtractor::class);
     $services->set(GrapesJsResponseBuilder::class);
-    $services->set(ImageUploadOrchestrator::class);
+    $services->set(ImageUploadOrchestrator::class)
+        ->arg('$allowedMimeTypes', '%openstudio_page_builder.allowed_mime_types%')
+        ->arg('$maxUploadSize', '%openstudio_page_builder.max_upload_size%');
     $services->set(ImageLibraryService::class);
 
     $services->set(StaticPageBuilderConfigProvider::class)

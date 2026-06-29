@@ -13,10 +13,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 final readonly class ImageUploadOrchestrator
 {
-    private const array ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/avif'];
-
+    /**
+     * @param list<string> $allowedMimeTypes
+     */
     public function __construct(
         private ImageUploadPortInterface $imageUploadPort,
+        private array $allowedMimeTypes,
+        private int $maxUploadSize,
     ) {
     }
 
@@ -45,9 +48,13 @@ final readonly class ImageUploadOrchestrator
             throw new ImageUploadException($file->getErrorMessage());
         }
 
+        if ($file->getSize() > $this->maxUploadSize) {
+            throw new ImageUploadException(\sprintf('File exceeds the maximum size of %d bytes.', $this->maxUploadSize));
+        }
+
         $mimeType = $file->getMimeType();
 
-        if (null === $mimeType || !\in_array($mimeType, self::ALLOWED_MIME_TYPES, true)) {
+        if (null === $mimeType || !\in_array($mimeType, $this->allowedMimeTypes, true)) {
             throw new ImageUploadException(\sprintf('Unsupported file type "%s".', $mimeType ?? 'unknown'));
         }
 
