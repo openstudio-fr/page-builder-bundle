@@ -25,10 +25,10 @@ The package is not on Packagist, so tell Composer where to find it:
 ]
 ```
 
-Then require it. There is no tagged release yet, so target the main branch:
+Then require it:
 
 ```bash
-composer require openstudio/page-builder-bundle:dev-main
+composer require openstudio/page-builder-bundle:^0.1
 ```
 
 If you do not use Symfony Flex, register the bundle:
