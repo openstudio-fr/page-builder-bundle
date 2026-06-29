@@ -80,7 +80,7 @@ export default (editor, options = {}) => {
             component.set("toolbar", tblHelper.getCellToolbar(editor));
         }
         if (component.get("type") === "customTable") {
-            component.set("toolbar", tblHelper.getTableToolbar(component));
+            component.set("toolbar", tblHelper.getTableToolbar(component, editor));
         }
     });
 

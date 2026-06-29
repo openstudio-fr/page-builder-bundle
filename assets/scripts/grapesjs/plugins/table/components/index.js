@@ -6,7 +6,7 @@ import CustomCell from "./CustomCell.js";
 export default (editor, options = {}) => {
     const domComponents = editor.DomComponents;
 
-    CustomTable(domComponents, options);
+    CustomTable(domComponents, options, editor);
     CustomRow(domComponents, options);
     CustomCellHeader(domComponents, options);
     CustomCell(domComponents, options);

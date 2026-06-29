@@ -1,6 +1,7 @@
 import * as tblHelper from "../utils.js";
 
-export default (domComponents, options) => {
+export default (domComponents, options, editor) => {
+    const t = (key) => editor.I18n.t(`pageBuilder.table.${key}`);
     domComponents.addType("customTable", {
         isComponent: (element) => element.tagName === "TABLE",
         model: {
@@ -19,14 +20,14 @@ export default (domComponents, options) => {
                         type: "button",
                         label: false,
                         name: "highlightCells",
-                        text: "Toggle highlight cells with size",
+                        text: t("highlightCells"),
                         command: (editor) => tblHelper.highlightCellsWithSize(editor.getSelected()),
                     },
                     {
                         type: "button",
                         label: false,
                         name: "highlightCellsRemove",
-                        text: "Clear all cells width and height",
+                        text: t("clearCells"),
                         command: (editor) => tblHelper.clearCellsWithSize(editor.getSelected()),
                     },
                 ],

@@ -1,22 +1,24 @@
+const t = (editor, key) => editor.I18n.t(`pageBuilder.table.${key}`);
+
 export const getCellToolbar = (editor) => {
     const toolbar = [
-        { attributes: { class: "column-actions columns-operations", title: "Columns operations" }, command: "table-show-columns-operations" },
-        { attributes: { class: "row-actions rows-operations", title: "Rows operations" }, command: "table-show-rows-operations" },
-        { attributes: { class: "fa fa-level-up", title: "Move row up" }, command: "table-row-move-up" },
-        { attributes: { class: "fa fa-level-down", title: "Move row down" }, command: "table-row-move-down" },
-        { attributes: { class: "fa fa-arrow-up", title: "Select parent component" }, command: "table-select" },
+        { attributes: { class: "column-actions columns-operations", title: t(editor, "columnsOperations") }, command: "table-show-columns-operations" },
+        { attributes: { class: "row-actions rows-operations", title: t(editor, "rowsOperations") }, command: "table-show-rows-operations" },
+        { attributes: { class: "fa fa-level-up", title: t(editor, "moveRowUp") }, command: "table-row-move-up" },
+        { attributes: { class: "fa fa-level-down", title: t(editor, "moveRowDown") }, command: "table-row-move-down" },
+        { attributes: { class: "fa fa-arrow-up", title: t(editor, "selectParent") }, command: "table-select" },
     ];
     const selected = editor.getSelected();
     if (selected.getAttributes()["colspan"] > 1 || selected.getAttributes()["rowspan"] > 1) {
-        toolbar.push({ attributes: { class: "fa fa-th-large", title: "Unmerge cells" }, command: "table-unmerge-cells" });
+        toolbar.push({ attributes: { class: "fa fa-th-large", title: t(editor, "unmergeCells") }, command: "table-unmerge-cells" });
     }
     return toolbar;
 };
 
-export const getTableToolbar = (component) => {
+export const getTableToolbar = (component, editor) => {
     const tb = component.get("toolbar");
     if (!tb.find((o) => o.command === "open-traits-settings")) {
-        tb.push({ command: "open-traits-settings", attributes: { class: "fa fa-cog", title: "Settings" } });
+        tb.push({ command: "open-traits-settings", attributes: { class: "fa fa-cog", title: t(editor, "settings") } });
     }
     return tb;
 };
@@ -123,14 +125,14 @@ export function updateAttributesAndCloseModal(editor, componentId) {
 
     const errors = [];
     if (!nColumns) {
-        errors.push("Missing number of columns.");
+        errors.push(t(editor, "errorMissingColumns"));
     } else if (nColumns <= 0) {
-        errors.push("Number of columns has to be more than 0.");
+        errors.push(t(editor, "errorColumnsPositive"));
     }
     if (!nRows) {
-        errors.push("Missing number of rows.");
+        errors.push(t(editor, "errorMissingRows"));
     } else if (nRows <= 0) {
-        errors.push("Number of rows has to be more than 0.");
+        errors.push(t(editor, "errorRowsPositive"));
     }
 
     if (errors.length > 0) {
@@ -141,7 +143,7 @@ export function updateAttributesAndCloseModal(editor, componentId) {
 
     const tableModel = getAllComponents(editor.getWrapper()).find((model) => model.cid === componentId);
     if (!tableModel) {
-        errorDiv.textContent = "Table component was not found in the editor. Cannot create table.";
+        errorDiv.textContent = t(editor, "errorComponentNotFound");
         errorDiv.style.display = "block";
         console.error("Table component was not found in the editor, expected component ID:", componentId);
         return;
@@ -191,17 +193,17 @@ export function updateTableToolbarSubmenu(editor, submenuToShow, submenuToHide, 
             `" style="display: none;">
                 <li class="table-toolbar-submenu-run-command" data-command="table-insert-row-above" ` +
             (selected.is(componentCellHeader) ? 'style="display: none;"' : "") +
-            `><i class="fa fa-chevron-up" aria-hidden="true"></i> Insert row above</li>
-                <li class="table-toolbar-submenu-run-command" data-command="table-insert-row-below"><i class="fa fa-chevron-down" aria-hidden="true"></i> Insert row below</li>
+            `><i class="fa fa-chevron-up" aria-hidden="true"></i> ${t(editor, "insertRowAbove")}</li>
+                <li class="table-toolbar-submenu-run-command" data-command="table-insert-row-below"><i class="fa fa-chevron-down" aria-hidden="true"></i> ${t(editor, "insertRowBelow")}</li>
                 <li class="table-toolbar-submenu-run-command" data-command="table-delete-row" ` +
             (selected.is(componentCellHeader) ? 'style="display: none;"' : "") +
-            `><i class="fa fa-trash" aria-hidden="true"></i> Delete Row</li>
+            `><i class="fa fa-trash" aria-hidden="true"></i> ${t(editor, "deleteRow")}</li>
                 <li class="table-toolbar-submenu-run-command" data-command="table-toggle-header" ` +
             (selected.is(componentCell) ? 'style="display: none;"' : "") +
-            `><i class="fa fa-trash" aria-hidden="true"></i> Remove Header</li>
+            `><i class="fa fa-trash" aria-hidden="true"></i> ${t(editor, "removeHeader")}</li>
                 <li id="button-merge-cells-right" class="table-toolbar-submenu-run-command" data-command="table-merge-cells-right" ` +
             (selected.collection.indexOf(selected) + 1 === selected.parent().components().length ? 'style="display: none;"' : "") +
-            `><i class="fa fa-arrows-h" aria-hidden="true"></i> Merge cell right</li>
+            `><i class="fa fa-arrows-h" aria-hidden="true"></i> ${t(editor, "mergeCellRight")}</li>
             </ul>`;
     } else {
         const rowspan = selected.getAttributes()["rowspan"] ? selected.getAttributes()["rowspan"] : 0;
@@ -211,14 +213,14 @@ export function updateTableToolbarSubmenu(editor, submenuToShow, submenuToHide, 
             `<ul id="toolbar-submenu-columns" class="toolbar-submenu ` +
             (toolbarLeft > 150 ? "toolbar-submenu-right" : "") +
             `" style="display: none;">
-                <li class="table-toolbar-submenu-run-command" data-command="table-insert-column-left"><i class="fa fa-chevron-left" aria-hidden="true"></i> Insert column left</li>
-                <li class="table-toolbar-submenu-run-command" data-command="table-insert-column-right"><i class="fa fa-chevron-right" aria-hidden="true"></i> Insert column right</li>
-                <li class="table-toolbar-submenu-run-command" data-command="table-delete-column"><i class="fa fa-trash" aria-hidden="true"></i> Delete column</li>
+                <li class="table-toolbar-submenu-run-command" data-command="table-insert-column-left"><i class="fa fa-chevron-left" aria-hidden="true"></i> ${t(editor, "insertColumnLeft")}</li>
+                <li class="table-toolbar-submenu-run-command" data-command="table-insert-column-right"><i class="fa fa-chevron-right" aria-hidden="true"></i> ${t(editor, "insertColumnRight")}</li>
+                <li class="table-toolbar-submenu-run-command" data-command="table-delete-column"><i class="fa fa-trash" aria-hidden="true"></i> ${t(editor, "deleteColumn")}</li>
                 <li id="button-merge-cells-down" class="table-toolbar-submenu-run-command" data-command="table-merge-cells-down" ` +
             (rowComponent.collection.indexOf(rowComponent) + rowspan === rowComponent.parent().components().length || selected.is(componentCellHeader)
                 ? 'style="display: none;"'
                 : "") +
-            `><i class="fa fa-arrows-v" aria-hidden="true"></i> Merge cell down</li>
+            `><i class="fa fa-arrows-v" aria-hidden="true"></i> ${t(editor, "mergeCellDown")}</li>
             </ul>`;
     }
 

@@ -191,21 +191,22 @@ export default (editor, options = {}) => {
 
     commands.add("open-table-settings-modal", {
         run(editor, sender, opts = {}) {
+            const t = (key) => editor.I18n.t(`pageBuilder.table.${key}`);
             editor.Modal.open({
-                title: "Create new Table",
+                title: t("modalTitle"),
                 content: `
                     <div class="new-table-form">
                         <div>
-                            <label for="nColumns">Number of columns</label>
+                            <label for="nColumns">${t("columnsLabel")}</label>
                             <input type="number" class="form-control" value="${opts.model.props()["nColumns"]}" name="nColumns" id="nColumns" min="1" />
                         </div>
                         <div>
-                            <label for="nRows">Number of rows</label>
+                            <label for="nRows">${t("rowsLabel")}</label>
                             <input type="number" class="form-control" value="${opts.model.props()["nRows"]}" name="nRows" id="nRows" min="1" />
                         </div>
                         <div class="error" style="display: none;"></div>
                     </div>
-                    <input id="table-button-create-new" type="button" value="Create Table" data-component-id="${opts.model.cid}" />
+                    <input id="table-button-create-new" type="button" value="${t("createButton")}" data-component-id="${opts.model.cid}" />
                 `,
             }).onceClose(() => {
                 if (!opts.model.components() || opts.model.components().length === 0) {
