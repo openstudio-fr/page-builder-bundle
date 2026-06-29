@@ -1,0 +1,27 @@
+{
+    "name": "@openstudio/page-builder-bundle",
+    "version": "1.0.0",
+    "keywords": [
+        "symfony-ux"
+    ],
+    "symfony": {
+        "controllers": {
+            "page_builder": {
+                "main": "controllers/page_builder_controller.js",
+                "name": "page-builder",
+                "fetch": "lazy",
+                "enabled": true
+            }
+        },
+        "importmap": {
+            "@hotwired/stimulus": "^3.2.2",
+            "grapesjs": "0.22.12",
+            "grapesjs/dist/css/grapes.min.css": "0.22.12",
+            "grapesjs/locale/fr": "0.22.12",
+            "grapesjs-blocks-basic": "1.0.2",
+            "grapesjs-preset-webpage": "1.0.3",
+            "grapesjs-component-countdown": "1.0.2",
+            "grapesjs-custom-code": "1.0.2"
+        }
+    }
+}
