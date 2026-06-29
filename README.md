@@ -16,8 +16,19 @@ It works in three steps:
 
 ## Installation
 
+The package is not on Packagist, so tell Composer where to find it:
+
+```json
+// composer.json
+"repositories": [
+    { "type": "vcs", "url": "https://github.com/openstudio-fr/page-builder-bundle" }
+]
+```
+
+Then require it. There is no tagged release yet, so target the main branch:
+
 ```bash
-composer require openstudio/page-builder-bundle
+composer require openstudio/page-builder-bundle:dev-main
 ```
 
 If you do not use Symfony Flex, register the bundle:
