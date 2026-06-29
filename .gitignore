@@ -3,7 +3,5 @@
 /.phpunit.cache/
 /.php-cs-fixer.cache
 /phpstan.cache/
-/demo/vendor/
-/demo/var/
 /.ddev/*
 !/.ddev/config.yaml

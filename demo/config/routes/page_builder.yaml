@@ -1,3 +1,0 @@
-openstudio_page_builder:
-    resource: '@OpenStudioPageBuilderBundle/config/routes.php'
-    prefix: /admin/page-builder
