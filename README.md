@@ -207,4 +207,4 @@ The endpoints validate the file size and type on their own. The `render-template
 
 ## License
 
-Proprietary. OpenStudio.
+LGPL-3.0-or-later. See [LICENSE](LICENSE) (LGPL-3.0) and [COPYING](COPYING) (GPL-3.0, which the LGPL supplements).
